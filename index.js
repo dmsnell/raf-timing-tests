@@ -7,9 +7,18 @@ const mutator = {
 }
 
 const domReady = () => {
+  stReporter()
   requestAnimationFrame( onRaf )
-  requestAnimationFrame( frameDelayer( 230 ) )
+  requestAnimationFrame( frameDelayer( 10 ) )
   requestAnimationFrame( frameCounter( performance.now() ) )
+}
+
+const stReporter = () => {
+  const tic = performance.now()
+  setTimeout( () => {
+    console.log( `setTimeout Δ = ${ performance.now() - tic }` )
+    setTimeout( stReporter, 0 )
+  }, 0 )
 }
 
 const fpsChunk = 10
@@ -36,6 +45,10 @@ const afterRaf = tic => {
   const toc = performance.now()
 
   console.log( `Δ = ${ toc - tic }` )
+
+  setTimeout( () => {
+    console.log( `Δ' = ${ performance.now() - toc }` )
+  }, 0 )
 }
 
 const onRaf = () => {
